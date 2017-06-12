@@ -13,8 +13,12 @@ user_input = raw_input("Enter your name: ")
 
 user_input2 = raw_input("Enter your age: ")
 
+
 part_1 = "will be 100 years old in"
 part_2 = "years, which will be the year"
 part_3 = 100 - int(user_input2)
-print user_input, part_1, 1
 
+n = 2017
+for year in range(part_3):
+    n = n + 1
+print user_input, part_1, part_3, part_2, n
