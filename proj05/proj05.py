@@ -11,7 +11,19 @@ def divisors(num):
     :param num: int
     :return: list (int)
     """
-    return 0
+    ans_list = []
+    for n in range(1,num+1):
+        print "num =", num, "n =", n
+        if num % n == 0:
+            print "is divisor"
+            ans_list.append(n)
+            print ans_list
+
+    return ans_list
+
+
+
+
 
 def prime(num):
     """
