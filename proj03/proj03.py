@@ -19,7 +19,7 @@ user_input = raw_input("Guess a number between 1 and 9: ")
 if user_input == the_number:
     print "Congrats, you didn't lose"
 
-if user_input
+
 
 
 
