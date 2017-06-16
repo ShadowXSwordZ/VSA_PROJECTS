@@ -6,6 +6,7 @@
 import random
 import string
 
+# letters available
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
 HAND_SIZE = 7
@@ -22,6 +23,7 @@ SCRABBLE_LETTER_VALUES = {
 
 WORDLIST_FILENAME = "words.txt"
 
+# uploading scrabble dictionary
 def load_words():
     """
     Returns a list of valid words. Words are strings of lowercase letters.
@@ -76,7 +78,17 @@ def get_word_score(word, n):
     word: string (lowercase letters)
     returns: int >= 0
     """
-    # TO DO...
+     #TO DO...
+    score = 0
+    for letter in word:
+        score += SCRABBLE_LETTER_VALUES [letter]
+    score *= len(word)
+    if len(word) == n:
+        score += 50
+    return score
+
+
+#    lowercase_word = get_word_score.lower
     
 #
 # Make sure you understand how this function works and what it does!
@@ -146,6 +158,17 @@ def update_hand(hand, word):
     returns: dictionary (string -> int)
     """
     # TO DO ...
+    newhand = hand.copy()
+    for letter in word:
+        newhand[letter] = newhand.get(letter,0) - 1
+
+    return newhand
+    # for n in deal_hand:
+    #     return n * hand
+    #     hand = {}
+    #     display_hand(hand)
+
+
 
 #
 # Problem #3: Test word validity
@@ -155,18 +178,30 @@ def is_valid_word(word, hand, word_list):
     Returns True if word is in the word_list and is entirely
     composed of letters in the hand. Otherwise, returns False.
     Does not mutate hand or word_list.
-    
+
     word: string
     hand: dictionary (string -> int)
     word_list: list of lowercase strings
     """
     # TO DO...
+    #list(word) #separating the letters in the word
+   # update_hand(hand, word)
+    if word in word_list:
+        for letter in word:
+            if letter not in hand or hand[letter] <= 0:
+                return False
+            hand = update_hand(hand, letter)
+        return True
+    return False
+
+
 
 def calculate_handlen(hand):
     handlen = 0
     for v in hand.values():
         handlen += v
     return handlen
+
 
 #
 # Problem #4: Playing a hand
@@ -177,7 +212,7 @@ def play_hand(hand, word_list):
     Allows the user to play the given hand, as follows:
 
     * The hand is displayed.
-    
+
     * The user may input a word.
 
     * An invalid word is rejected, and a message is displayed asking
@@ -197,14 +232,33 @@ def play_hand(hand, word_list):
 
       hand: dictionary (string -> int)
       word_list: list of lowercase strings
-      
+
     """
     # TO DO ...
+    word = 0
+    score = 0
+    while word != ".":
+        display_hand(hand)
+        word = raw_input("Please enter a word: ")
+
+        if is_valid_word(word, hand, word_list):
+            score += get_word_score(word, HAND_SIZE)
+            print "Your score is ", score
+            hand = update_hand(hand,word)
+        # elif word == ".":
+        #     break
+        else:
+            print "Sorry that's not a word."
+
+    
+
+
+
 
 #
 # Problem #5: Playing a game
 # Make sure you understand how this code works!
-# 
+#
 def play_game(word_list):
     """
     Allow the user to play an arbitrary number of hands.
@@ -225,6 +279,20 @@ def play_game(word_list):
 #
 # Build data structures used for entire session and play game
 #
-if __name__ == '__main__':
-    word_list = load_words()
-    play_game(word_list)
+    user_play = None
+
+    while user_play != "e" or user_play != "n" or user_play != "r":
+        user_play = raw_input("Enter 'n' for new hand, 'r' to play the hand again, or 'e' to exit.")
+        if str(user_play) == "e":
+            print "Okay have a great day!"
+            break
+        if str(user_play) == "n":
+            hand = deal_hand(HAND_SIZE)
+            play_hand(hand,word_list)
+        if str(user_play) == "r":
+            play_hand(hand, word_list)
+    # play last hand
+
+if __name__ == "__main__":
+    wordlist = load_words()
+    play_game(wordlist)
